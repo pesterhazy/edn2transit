@@ -1,0 +1,20 @@
+#!/usr/bin/env lumo
+;; -*- mode: ClojureScript -*-
+
+(ns edn2json.core
+  (:require [cljs.reader :as edn]
+            [clojure.pprint]
+            [lumo.common]))
+
+(def fs (js/require "fs"))
+
+(defn slurp-stdin []
+  (-> (.readFileSync fs 0)
+      .toString))
+
+(defn run []
+  (-> (slurp-stdin)
+      lumo.common/transit-json->cljs
+      clojure.pprint/pprint))
+
+(run)
